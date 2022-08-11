@@ -17,7 +17,7 @@ namespace LibraryWebAPI.Controllers
             new User()
             {
                 Id = 1,
-                Name = "Artur",
+                Name = "André",
                 City = "Fortaleza",
                 Address = "Rua A",
                 Email = "artur@gmail.com"
