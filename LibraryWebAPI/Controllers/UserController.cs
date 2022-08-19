@@ -1,5 +1,7 @@
-﻿using LibraryWebAPI.Models;
+﻿using LibraryWebAPI.Data;
+using LibraryWebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,60 +9,32 @@ using System.Linq;
 
 namespace LibraryWebAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
 
-        public List<User> Users = new List<User>()
+        public readonly IRepository _repo;
+
+        public UserController(IRepository repo)
         {
-            new User()
-            {
-                Id = 1,
-                Name = "André",
-                City = "Fortaleza",
-                Address = "Rua A",
-                Email = "artur@gmail.com"
-
-            },
-
-
-            new User()
-            {
-                Id = 2,
-                Name = "Rosa",
-                City = "Fortaleza",
-                Address = "Rua A",
-                Email = "rosa@gmail.com"
-
-            },
-
-
-            new User()
-            {
-                Id = 3,
-                Name = "Leo",
-                City = "Fortaleza",
-                Address = "Rua A",
-                Email = "leo@gmail.com"
-
-            }
-        };
-
-        public UserController() { }
-
+            _repo = repo;
+           
+        }
         // GET: api/<ValuesController>
+
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(Users);
+            var result = _repo.GetAllUsers();
+            return Ok(result);
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("byId/{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var user = Users.FirstOrDefault(a => a.Id == id);
+            var user = _repo.GetUserById(id);
             if (user == null) return BadRequest("Usuário não encontrado!");
 
             return Ok(user);
@@ -69,24 +43,50 @@ namespace LibraryWebAPI.Controllers
         [HttpPost]
         public IActionResult Post(User user)
         {
-            
-            return Ok(user);
+            _repo.Add(user);
+            if (_repo.SaveChanges())
+            {
+                return Ok(user);
+            }
+
+            return BadRequest("Usuário não cadastrado!");
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, User user)
         {
-            
-            return Ok(user);
+            var use_r = _repo.GetUserById(id);
+            if (use_r == null) return BadRequest("Usuário não encontrado!");
+
+
+            _repo.Update(user);
+            if (_repo.SaveChanges())
+            {
+                return Ok(user);
+            }
+
+            return BadRequest("Usuário não cadastrado!");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            var use_r = _repo.GetUserById(id);
+            if (use_r == null) return BadRequest("Usuário não encontrado!");
 
-            return Ok();
+            _repo.Delete(use_r);
+            if (_repo.SaveChanges())
+            {
+                return Ok("Usuário deletado!");
+            }
+
+            return BadRequest("Usuário não deletado!");
+
+
         }
-
     }
+
 }
+
+
 

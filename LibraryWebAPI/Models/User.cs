@@ -5,11 +5,11 @@
         public User() { }
         public User(int id, string name, string city, string address, string email)
         {
-            Id = id;
-            Name = name;
-            City = city;
-            Address = address;
-            Email = email;
+            this.Id = id;
+            this.Name = name;
+            this.City = city;
+            this.Address = address;
+            this.Email = email;
         }
 
         public int Id { get; set; }
