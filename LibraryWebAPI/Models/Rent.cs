@@ -4,26 +4,24 @@
     {
         public Rent() { }
       
-        public Rent(int id, string userId, string userName, string bookId, string bookName, string rentDate, string forecastDate, string devolutionDate)
+        public Rent(int id, int userId, int bookId, int rentDate, int forecastDate, int devolutionDate)
         {
-            Id = id;
-            UserId = userId;
-            UserName = userName;
-            BookId = bookId;
-            BookName = bookName;
-            RentDate = rentDate;
-            ForecastDate = forecastDate;
-            DevolutionDate = devolutionDate;
+            this.Id = id;
+            this.UserId = userId;
+            this.BookId = bookId;
+            this.RentDate = rentDate;
+            this.ForecastDate = forecastDate;
+            this.DevolutionDate = devolutionDate;
         }
 
         public int Id { get; set; }
-        public string UserId { get; set; }
-        public string UserName { get; set; }
-        public string BookId { get; set; }
-        public string BookName { get; set; }
-        public string RentDate { get; set;}
-        public string ForecastDate { get; set; }
-        public string DevolutionDate { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
+        public int BookId { get; set; }
+        public  Book Book { get; set; }
+        public int RentDate { get; set;}
+        public int ForecastDate { get; set; }
+        public int DevolutionDate { get; set; }
 
 
 

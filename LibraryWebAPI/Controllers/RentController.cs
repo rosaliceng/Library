@@ -11,11 +11,11 @@ namespace LibraryWebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-      public class UserController : ControllerBase
+    public class RentController : ControllerBase
     {
         private readonly LibraryContext _context;
 
-        public UserController(LibraryContext context)
+        public RentController(LibraryContext context)
         {
             _context = context;
         }
@@ -24,45 +24,45 @@ namespace LibraryWebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.Users);
+            return Ok(_context.Rents);
         }
 
         // GET api/<ValuesController>/5
         [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
-            var user = _context.Users.FirstOrDefault(a => a.Id == id);
-            if (user == null) return BadRequest("Usuário não encontrado!");
+            var rent = _context.Rents.FirstOrDefault(a => a.Id == id);
+            if (rent == null) return BadRequest("Resultado não encontrado!");
 
-            return Ok(user);
+            return Ok(rent);
         }
 
         [HttpPost]
-        public IActionResult Post(User user)
+        public IActionResult Post(Rent rent)
         {
-            _context.Add(user);
+            _context.Add(rent);
             _context.SaveChanges();
-            return Ok(user);
+            return Ok(rent);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, User user)
+        public IActionResult Put(int id, Rent rent)
         {
-            var use_r = _context.Users.AsNoTracking().FirstOrDefault(a => a.Id == id);
-            if (use_r == null) return BadRequest("Usuário não encontrado!");
+            var ren_t = _context.Rents.AsNoTracking().FirstOrDefault(a => a.Id == id);
+            if (ren_t == null) return BadRequest("Resultado não encontrado!");
 
-            _context.Update(user);
+            _context.Update(rent);
             _context.SaveChanges();
-            return Ok(user);
+            return Ok(rent);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var user = _context.Users.FirstOrDefault(a => a.Id == id);
-            if (user == null) return BadRequest("Usuário não encontrado!"); 
+            var rent = _context.Rents.FirstOrDefault(a => a.Id == id);
+            if (rent == null) return BadRequest("Resultado não encontrado!");
 
-            _context.Remove(user);
+            _context.Remove(rent);
             _context.SaveChanges();
             return Ok();
         }
@@ -70,4 +70,6 @@ namespace LibraryWebAPI.Controllers
 
     }
 }
+
+
 

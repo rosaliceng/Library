@@ -11,11 +11,11 @@ namespace LibraryWebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-      public class UserController : ControllerBase
+    public class PublisherController : ControllerBase
     {
         private readonly LibraryContext _context;
 
-        public UserController(LibraryContext context)
+        public PublisherController(LibraryContext context)
         {
             _context = context;
         }
@@ -24,45 +24,45 @@ namespace LibraryWebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.Users);
+            return Ok(_context.Publishers);
         }
 
         // GET api/<ValuesController>/5
         [HttpGet("byId/{id}")]
         public IActionResult GetById(int id)
         {
-            var user = _context.Users.FirstOrDefault(a => a.Id == id);
-            if (user == null) return BadRequest("Usuário não encontrado!");
+            var publisher = _context.Publishers.FirstOrDefault(a => a.Id == id);
+            if (publisher == null) return BadRequest("Editora não encontrada!");
 
-            return Ok(user);
+            return Ok(publisher);
         }
 
         [HttpPost]
-        public IActionResult Post(User user)
+        public IActionResult Post(Publisher publisher)
         {
-            _context.Add(user);
+            _context.Add(publisher);
             _context.SaveChanges();
-            return Ok(user);
+            return Ok(publisher);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, User user)
+        public IActionResult Put(int id, Publisher publisher)
         {
-            var use_r = _context.Users.AsNoTracking().FirstOrDefault(a => a.Id == id);
-            if (use_r == null) return BadRequest("Usuário não encontrado!");
+            var publishe_r = _context.Publishers.AsNoTracking().FirstOrDefault(a => a.Id == id);
+            if (publishe_r == null) return BadRequest("Editora não encontrada!");
 
-            _context.Update(user);
+            _context.Update(publisher);
             _context.SaveChanges();
-            return Ok(user);
+            return Ok(publisher);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var user = _context.Users.FirstOrDefault(a => a.Id == id);
-            if (user == null) return BadRequest("Usuário não encontrado!"); 
+            var publisher = _context.Publishers.FirstOrDefault(a => a.Id == id);
+            if (publisher == null) return BadRequest("Editora não encontrada!");
 
-            _context.Remove(user);
+            _context.Remove(publisher);
             _context.SaveChanges();
             return Ok();
         }
