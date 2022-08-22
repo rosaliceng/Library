@@ -13,58 +13,69 @@ namespace LibraryWebAPI.Controllers
     [Route("api/[controller]")]
     public class BookController : ControllerBase
     {
-        private readonly LibraryContext _context;
 
-        public BookController(LibraryContext context)
+        public readonly IRepository _repo;
+        public BookController(IRepository repo)
         {
-            _context = context;
+            _repo = repo;
+
         }
 
         // GET: api/<ValuesController>
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.Books);
+            var result = _repo.GetAllBooks();
+            return Ok(result);
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("byId/{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var book = _context.Books.FirstOrDefault(a => a.Id == id);
-            if (book == null) return BadRequest("Livro não encontrado!");
+            var rent = _repo.GetBookById(id,true);
+            if (rent == null) return BadRequest("Resultado não encontrado!");
 
-            return Ok(book);
+            return Ok(rent);
         }
 
         [HttpPost]
         public IActionResult Post(Book book)
         {
-            _context.Add(book);
-            _context.SaveChanges();
-            return Ok(book);
+            _repo.Add(book);
+            if (_repo.SaveChanges())
+            {
+                return Ok(book);
+            }
+
+            return BadRequest("Aluguel não cadastrado!");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Book book)
+        public IActionResult Put(int id, Book book )
         {
-            var boo_k = _context.Books.AsNoTracking().FirstOrDefault(a => a.Id == id);
-            if (boo_k == null) return BadRequest("Livro não encontrado!");
+            var boo_k = _repo.GetBookById(id,true);
+            if (boo_k == null) return BadRequest("Resultado não encontrado!");
 
-            _context.Update(book);
-            _context.SaveChanges();
+            _repo.Update(book);
+            if (_repo.SaveChanges()) ;
+
             return Ok(book);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var book = _context.Users.FirstOrDefault(a => a.Id == id);
-            if (book == null) return BadRequest("Livro não encontrado!");
+            var boo_k = _repo.GetBookById(id,true);
+            if (boo_k == null) return BadRequest("Resultado não encontrado!");
 
-            _context.Remove(book);
-            _context.SaveChanges();
-            return Ok();
+            _repo.Delete(boo_k);
+            if (_repo.SaveChanges())
+            {
+                return Ok("Liveo deletado!");
+            }
+
+            return BadRequest("Livrp não deletado!");
         }
 
 

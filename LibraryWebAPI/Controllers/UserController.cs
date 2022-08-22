@@ -11,27 +11,30 @@ namespace LibraryWebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-      public class UserController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly LibraryContext _context;
 
-        public UserController(LibraryContext context)
+        public readonly IRepository _repo;
+
+        public UserController(IRepository repo)
         {
-            _context = context;
+            _repo = repo;
+           
         }
-
         // GET: api/<ValuesController>
+
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.Users);
+            var result = _repo.GetAllUsers();
+            return Ok(result);
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("byId/{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var user = _context.Users.FirstOrDefault(a => a.Id == id);
+            var user = _repo.GetUserById(id);
             if (user == null) return BadRequest("Usuário não encontrado!");
 
             return Ok(user);
@@ -40,34 +43,50 @@ namespace LibraryWebAPI.Controllers
         [HttpPost]
         public IActionResult Post(User user)
         {
-            _context.Add(user);
-            _context.SaveChanges();
-            return Ok(user);
+            _repo.Add(user);
+            if (_repo.SaveChanges())
+            {
+                return Ok(user);
+            }
+
+            return BadRequest("Usuário não cadastrado!");
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, User user)
         {
-            var use_r = _context.Users.AsNoTracking().FirstOrDefault(a => a.Id == id);
+            var use_r = _repo.GetUserById(id);
             if (use_r == null) return BadRequest("Usuário não encontrado!");
 
-            _context.Update(user);
-            _context.SaveChanges();
-            return Ok(user);
+
+            _repo.Update(user);
+            if (_repo.SaveChanges())
+            {
+                return Ok(user);
+            }
+
+            return BadRequest("Usuário não cadastrado!");
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var user = _context.Users.FirstOrDefault(a => a.Id == id);
-            if (user == null) return BadRequest("Usuário não encontrado!"); 
+            var use_r = _repo.GetUserById(id);
+            if (use_r == null) return BadRequest("Usuário não encontrado!");
 
-            _context.Remove(user);
-            _context.SaveChanges();
-            return Ok();
+            _repo.Delete(use_r);
+            if (_repo.SaveChanges())
+            {
+                return Ok("Usuário deletado!");
+            }
+
+            return BadRequest("Usuário não deletado!");
+
+
         }
-
-
     }
+
 }
+
+
 

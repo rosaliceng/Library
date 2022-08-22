@@ -13,26 +13,29 @@ namespace LibraryWebAPI.Controllers
     [Route("api/[controller]")]
     public class RentController : ControllerBase
     {
-        private readonly LibraryContext _context;
 
-        public RentController(LibraryContext context)
+        public readonly IRepository _repo;
+
+        public RentController(IRepository repo)
         {
-            _context = context;
-        }
+            _repo = repo;
 
+        }
         // GET: api/<ValuesController>
+
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.Rents);
+            var result = _repo.GetAllRents();
+            return Ok(result);
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("byId/{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var rent = _context.Rents.FirstOrDefault(a => a.Id == id);
-            if (rent == null) return BadRequest("Resultado não encontrado!");
+            var rent = _repo.GetRentById(id,id);
+            if (rent == null) return BadRequest("Aluguel não encontrado!");
 
             return Ok(rent);
         }
@@ -40,36 +43,51 @@ namespace LibraryWebAPI.Controllers
         [HttpPost]
         public IActionResult Post(Rent rent)
         {
-            _context.Add(rent);
-            _context.SaveChanges();
-            return Ok(rent);
+            _repo.Add(rent);
+            if (_repo.SaveChanges())
+            {
+                return Ok(rent);
+            }
+
+            return BadRequest("Aluguel não cadastrado!");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Rent rent)
+        public IActionResult Put(int id, User user)
         {
-            var ren_t = _context.Rents.AsNoTracking().FirstOrDefault(a => a.Id == id);
-            if (ren_t == null) return BadRequest("Resultado não encontrado!");
+            var ren_t = _repo.GetUserById(id);
+            if (ren_t == null) return BadRequest("Usuário não encontrado!");
 
-            _context.Update(rent);
-            _context.SaveChanges();
-            return Ok(rent);
+
+            _repo.Update(ren_t);
+            if (_repo.SaveChanges())
+            {
+                return Ok(ren_t);
+            }
+
+            return BadRequest("Aluguel não cadastrado!");
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var rent = _context.Rents.FirstOrDefault(a => a.Id == id);
-            if (rent == null) return BadRequest("Resultado não encontrado!");
+            var ren_t = _repo.GetRentById(id,id);
+            if (ren_t == null) return BadRequest("Aluguel não encontrado!");
 
-            _context.Remove(rent);
-            _context.SaveChanges();
-            return Ok();
+            _repo.Delete(ren_t);
+            if (_repo.SaveChanges())
+            {
+                return Ok("Aluguel deletado!");
+            }
+
+            return BadRequest("Aluguel não deletado!");
+
+
         }
-
-
     }
+
 }
+
 
 
 
