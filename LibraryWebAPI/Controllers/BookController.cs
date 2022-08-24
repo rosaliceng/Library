@@ -1,4 +1,6 @@
-﻿using LibraryWebAPI.Data;
+﻿using AutoMapper;
+using LibraryWebAPI.Data;
+using LibraryWebAPI.Dto;
 using LibraryWebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +15,13 @@ namespace LibraryWebAPI.Controllers
     [Route("api/[controller]")]
     public class BookController : ControllerBase
     {
-
         public readonly IRepository _repo;
-        public BookController(IRepository repo)
+
+        public readonly IMapper _mapper;
+
+        public BookController(IRepository repo, IMapper mapper)
         {
+            _mapper = mapper;
             _repo = repo;
 
         }
@@ -25,57 +30,68 @@ namespace LibraryWebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var result = _repo.GetAllBooks();
-            return Ok(result);
+            var books = _repo.GetAllBooks();
+
+            return Ok(_mapper.Map<IEnumerable<BookDto>>(books));
         }
 
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var rent = _repo.GetBookById(id,true);
-            if (rent == null) return BadRequest("Resultado não encontrado!");
+            var book = _repo.GetBookById(id, true);
+            if (book == null) return BadRequest("Resultado não encontrado!");
 
-            return Ok(rent);
+            var bookDto = _mapper.Map<BookDto>(book);
+
+            return Ok(bookDto);
         }
 
         [HttpPost]
-        public IActionResult Post(Book book)
+        public IActionResult Post(BookDto model)
         {
+            var book = _mapper.Map<Book>(model);
+
             _repo.Add(book);
             if (_repo.SaveChanges())
             {
-                return Ok(book);
+                return Created($"/api/book/{model.Id}", _mapper.Map<BookDto>(book));
             }
 
-            return BadRequest("Aluguel não cadastrado!");
+            return BadRequest("Livro não atualizado!");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Book book )
+        public IActionResult Put(int id, BookDto model)
         {
-            var boo_k = _repo.GetBookById(id,true);
-            if (boo_k == null) return BadRequest("Resultado não encontrado!");
+            var book = _repo.GetBookById(id, true);
+            if (book == null) return BadRequest("Resultado não encontrado!");
+
+            _mapper.Map(model, book);
+
 
             _repo.Update(book);
-            if (_repo.SaveChanges()) ;
+            if (_repo.SaveChanges())
+            {
+                return Created($"/api/book/{model.Id}", _mapper.Map<BookDto>(book));
+            }
 
-            return Ok(book);
+            return BadRequest("Usuário não cadastrado!");
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var boo_k = _repo.GetBookById(id,true);
-            if (boo_k == null) return BadRequest("Resultado não encontrado!");
+            var book = _repo.GetBookById(id, true);
+            if (book == null) return BadRequest("Resultado não encontrado!");
 
-            _repo.Delete(boo_k);
+            _repo.Delete(book);
             if (_repo.SaveChanges())
             {
-                return Ok("Liveo deletado!");
+                return Ok("Livro deletado!");
             }
 
-            return BadRequest("Livrp não deletado!");
+            return BadRequest("Livro não deletado!");
         }
 
 

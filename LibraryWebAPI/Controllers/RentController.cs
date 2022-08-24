@@ -1,4 +1,6 @@
-﻿using LibraryWebAPI.Data;
+﻿using AutoMapper;
+using LibraryWebAPI.Data;
+using LibraryWebAPI.Dto;
 using LibraryWebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +15,13 @@ namespace LibraryWebAPI.Controllers
     [Route("api/[controller]")]
     public class RentController : ControllerBase
     {
-
         public readonly IRepository _repo;
 
-        public RentController(IRepository repo)
+        public readonly IMapper _mapper;
+
+        public RentController(IRepository repo, IMapper mapper)
         {
+            _mapper = mapper;
             _repo = repo;
 
         }
@@ -26,43 +30,49 @@ namespace LibraryWebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var result = _repo.GetAllRents();
-            return Ok(result);
+            var rents = _repo.GetAllRents();
+
+            return Ok(_mapper.Map<IEnumerable<RentDto>>(rents));
         }
 
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var rent = _repo.GetRentById(id,id);
+            var rent = _repo.GetRentById(id, id);
             if (rent == null) return BadRequest("Aluguel não encontrado!");
 
-            return Ok(rent);
+            var rentDto = _mapper.Map<RentDto>(rent);
+
+            return Ok(rentDto);
         }
 
         [HttpPost]
-        public IActionResult Post(Rent rent)
+        public IActionResult Post(RentDto model)
         {
+            var rent = _mapper.Map<Rent>(model);
+
             _repo.Add(rent);
             if (_repo.SaveChanges())
             {
-                return Ok(rent);
+                return Created($"/api/rent/{model.Id}", _mapper.Map<RentDto>(rent));
             }
 
             return BadRequest("Aluguel não cadastrado!");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, User user)
+        public IActionResult Put(int id, RentDto model)
         {
-            var ren_t = _repo.GetUserById(id);
-            if (ren_t == null) return BadRequest("Usuário não encontrado!");
+            var rent = _repo.GetRentById(id,id);
+            if (rent == null) return BadRequest("Usuário não encontrado!");
 
+            _mapper.Map(model, rent);
 
-            _repo.Update(ren_t);
+            _repo.Update(rent);
             if (_repo.SaveChanges())
             {
-                return Ok(ren_t);
+                return Created($"/api/rent/{model.Id}", _mapper.Map<RentDto>(rent));
             }
 
             return BadRequest("Aluguel não cadastrado!");
