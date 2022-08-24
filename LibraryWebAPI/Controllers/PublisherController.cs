@@ -1,4 +1,6 @@
-﻿using LibraryWebAPI.Data;
+﻿using AutoMapper;
+using LibraryWebAPI.Data;
+using LibraryWebAPI.Dto;
 using LibraryWebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +16,12 @@ namespace LibraryWebAPI.Controllers
     public class PublisherController : ControllerBase
     {
         public readonly IRepository _repo;
-        public PublisherController(IRepository repo)
+
+        public readonly IMapper _mapper;
+
+        public PublisherController(IRepository repo, IMapper mapper)
         {
+            _mapper = mapper;
             _repo = repo;
 
         }
@@ -24,8 +30,9 @@ namespace LibraryWebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var result = _repo.GetAllPublishers();
-            return Ok(result);
+            var publishers = _repo.GetAllPublishers();
+
+            return Ok(_mapper.Map<IEnumerable<PublisherDto>>(publishers));
         }
 
         // GET api/<ValuesController>/5
@@ -35,31 +42,40 @@ namespace LibraryWebAPI.Controllers
             var publisher = _repo.GetPublisherById(id);
             if (publisher == null) return BadRequest("Resultado não encontrado!");
 
-            return Ok(publisher);
+            var publisherDto = _mapper.Map<PublisherDto>(publisher);
+
+            return Ok(publisherDto);
         }
 
         [HttpPost]
-        public IActionResult Post(Publisher publisher)
+        public IActionResult Post(PublisherDto model)
         {
+            var publisher = _mapper.Map<Publisher>(model);
+
             _repo.Add(publisher);
             if (_repo.SaveChanges())
             {
-                return Ok(publisher);
+                return Created($"/api/publisher/{model.Id}", _mapper.Map<PublisherDto>(publisher));
             }
 
             return BadRequest("Editora não cadastrada!");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Publisher publisher)
+        public IActionResult Put(int id, PublisherDto model)
         {
-            var publishe_r = _repo.GetPublisherById(id);
-            if (publishe_r == null) return BadRequest("Resultado não encontrado!");
+            var publisher = _repo.GetPublisherById(id);
+            if (publisher == null) return BadRequest("Editora não atualizada!");
+
+            _mapper.Map(model, publisher);
 
             _repo.Update(publisher);
             if (_repo.SaveChanges()) ;
+            {
+                return Created($"/api/publisher/{model.Id}", _mapper.Map<PublisherDto>(publisher));
+            }
 
-            return Ok(publisher);
+            return BadRequest("Editora não atualizada!");
         }
 
         [HttpDelete("{id}")]

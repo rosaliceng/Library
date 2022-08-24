@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LibraryWebAPI.Migrations
 {
-    public partial class init : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,7 +46,7 @@ namespace LibraryWebAPI.Migrations
                     Name = table.Column<string>(nullable: true),
                     Author = table.Column<string>(nullable: true),
                     PublisherId = table.Column<int>(nullable: false),
-                    Launch = table.Column<int>(nullable: false),
+                    Launch = table.Column<DateTime>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
                     TotalRented = table.Column<int>(nullable: false)
                 },
@@ -68,9 +69,9 @@ namespace LibraryWebAPI.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<int>(nullable: false),
                     BookId = table.Column<int>(nullable: false),
-                    RentDate = table.Column<int>(nullable: false),
-                    ForecastDate = table.Column<int>(nullable: false),
-                    DevolutionDate = table.Column<int>(nullable: false)
+                    RentDate = table.Column<DateTime>(nullable: false),
+                    ForecastDate = table.Column<DateTime>(nullable: false),
+                    DevolutionDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -132,42 +133,42 @@ namespace LibraryWebAPI.Migrations
             migrationBuilder.InsertData(
                 table: "Books",
                 columns: new[] { "Id", "Author", "Launch", "Name", "PublisherId", "Quantity", "TotalRented" },
-                values: new object[] { 1, "Jk Rowling", 23072001, "Harry Potter e o Cálice de fogo", 1, 10, 23 });
+                values: new object[] { 1, "Jk Rowling", new DateTime(2000, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Harry Potter e o Cálice de fogo", 1, 10, 23 });
 
             migrationBuilder.InsertData(
                 table: "Books",
                 columns: new[] { "Id", "Author", "Launch", "Name", "PublisherId", "Quantity", "TotalRented" },
-                values: new object[] { 4, "Rick Riordan", 23072004, "Percy Jackson e o Ladrão de raios", 2, 3, 23 });
+                values: new object[] { 4, "Rick Riordan", new DateTime(2005, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Percy Jackson e o Ladrão de raios", 2, 3, 23 });
 
             migrationBuilder.InsertData(
                 table: "Books",
                 columns: new[] { "Id", "Author", "Launch", "Name", "PublisherId", "Quantity", "TotalRented" },
-                values: new object[] { 2, "Drauzio Varella", 8072001, "Estação Carandiru", 3, 68, 90 });
+                values: new object[] { 2, "Drauzio Varella", new DateTime(1999, 6, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Estação Carandiru", 3, 68, 90 });
 
             migrationBuilder.InsertData(
                 table: "Books",
                 columns: new[] { "Id", "Author", "Launch", "Name", "PublisherId", "Quantity", "TotalRented" },
-                values: new object[] { 3, "Antoine de Saint-Exupéry", 23082001, "O pequeno príncipe", 4, 10, 36 });
+                values: new object[] { 3, "Antoine de Saint-Exupéry", new DateTime(1943, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "O pequeno príncipe", 4, 10, 36 });
 
             migrationBuilder.InsertData(
                 table: "Rents",
                 columns: new[] { "Id", "BookId", "DevolutionDate", "ForecastDate", "RentDate", "UserId" },
-                values: new object[] { 1, 1, 26092022, 280920022, 20220923, 1 });
+                values: new object[] { 1, 1, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 });
 
             migrationBuilder.InsertData(
                 table: "Rents",
                 columns: new[] { "Id", "BookId", "DevolutionDate", "ForecastDate", "RentDate", "UserId" },
-                values: new object[] { 3, 4, 26092022, 280920022, 20220923, 4 });
+                values: new object[] { 3, 4, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), 4 });
 
             migrationBuilder.InsertData(
                 table: "Rents",
                 columns: new[] { "Id", "BookId", "DevolutionDate", "ForecastDate", "RentDate", "UserId" },
-                values: new object[] { 4, 2, 26092022, 280920022, 20220923, 3 });
+                values: new object[] { 4, 2, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), 3 });
 
             migrationBuilder.InsertData(
                 table: "Rents",
                 columns: new[] { "Id", "BookId", "DevolutionDate", "ForecastDate", "RentDate", "UserId" },
-                values: new object[] { 2, 3, 26092022, 280920022, 20220923, 2 });
+                values: new object[] { 2, 3, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_PublisherId",

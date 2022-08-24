@@ -1,10 +1,17 @@
-﻿namespace LibraryWebAPI.Models
+﻿using System;
+
+namespace LibraryWebAPI.Models
 {
     public class Rent
     {
         public Rent() { }
       
-        public Rent(int id, int userId, int bookId, int rentDate, int forecastDate, int devolutionDate)
+        public Rent(int id,
+                    int userId,
+                    int bookId,
+                    DateTime rentDate, 
+                    DateTime forecastDate, 
+                    DateTime devolutionDate)
         {
             this.Id = id;
             this.UserId = userId;
@@ -19,9 +26,9 @@
         public User User { get; set; }
         public int BookId { get; set; }
         public  Book Book { get; set; }
-        public int RentDate { get; set;}
-        public int ForecastDate { get; set; }
-        public int DevolutionDate { get; set; }
+        public DateTime RentDate { get; set;}
+        public DateTime ForecastDate { get; set; }
+        public DateTime DevolutionDate { get; set; }
 
 
 

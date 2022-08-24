@@ -1,12 +1,13 @@
 ﻿using LibraryWebAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 
 namespace LibraryWebAPI.Data
 {
     public class LibraryContext : DbContext
     {
-        public LibraryContext (DbContextOptions<LibraryContext> options) : base(options){ }
+        public LibraryContext(DbContextOptions<LibraryContext> options) : base(options) { }
         public DbSet<User> Users { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Rent> Rents { get; set; }
@@ -23,10 +24,10 @@ namespace LibraryWebAPI.Data
             });
             builder.Entity<Book>()
                .HasData(new List<Book>(){
-                    new Book(1, "Harry Potter e o Cálice de fogo" ,"Jk Rowling", 1, 23072001, 10, 23),
-                    new Book(2, "Estação Carandiru", "Drauzio Varella", 3, 08072001, 68, 90),
-                    new Book(3, "O pequeno príncipe", "Antoine de Saint-Exupéry", 4, 23082001, 10, 36),
-                    new Book(4, "Percy Jackson e o Ladrão de raios", "Rick Riordan", 2, 23072004, 3, 23),
+                    new Book(1, "Harry Potter e o Cálice de fogo" ,"Jk Rowling", 1, DateTime.Parse("10/11/2000"), 10, 23),
+                    new Book(2, "Estação Carandiru", "Drauzio Varella", 3,  DateTime.Parse("07/06/1999"), 68, 90),
+                    new Book(3, "O pequeno príncipe", "Antoine de Saint-Exupéry", 4,  DateTime.Parse("10/04/1943"), 10, 36),
+                    new Book(4, "Percy Jackson e o Ladrão de raios", "Rick Riordan", 2,  DateTime.Parse("01/07/2005"), 3, 23),
 
                });
 
@@ -36,15 +37,15 @@ namespace LibraryWebAPI.Data
                     new Publisher(2, "Intríseca", "Rio de Janeiro"),
                     new Publisher(3, "Arqueiro", "Fortaleza"),
                     new Publisher(4, "Bem me quer", "Fortaleza"),
-                 
+
                 });
 
             builder.Entity<Rent>()
                 .HasData(new List<Rent>(){
-                    new Rent(1, 1, 1,20220923, 280920022, 26092022),
-                    new Rent(2, 2, 3,20220923, 280920022, 26092022),
-                    new Rent(3, 4, 4,20220923, 280920022, 26092022),
-                    new Rent(4, 3, 2,20220923, 280920022, 26092022),
+                    new Rent(1, 1, 1, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022")),
+                    new Rent(2, 2, 3, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022")),
+                    new Rent(3, 4, 4, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022")),
+                    new Rent(4, 3, 2, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022")),
                 });
         }
 
