@@ -3,7 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DocumentationFile>LibraryWebAPI.xml</DocumentationFile>
+	</PropertyGroup>
   <ItemGroup>
     <None Remove="Library.db" />
     <None Remove="Library.db-shm" />
@@ -17,6 +19,8 @@
 	  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
 	   <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
 	   <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	   <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1" />
+	   <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1" />
 	<PackpageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
 	</ItemGroup>
 </Project>

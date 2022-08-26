@@ -11,23 +11,34 @@ using System.Linq;
 
 namespace LibraryWebAPI.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}[controller]")]
     public class UserController : ControllerBase
     {
 
         public readonly IRepository _repo;
 
         public readonly IMapper _mapper;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="mapper"></param>
         public UserController(IRepository repo,IMapper mapper)
         {
             _mapper = mapper;
             _repo = repo;
            
         }
-        // GET: api/<ValuesController>
-
+        /// <summary>
+        /// Método responsavel por retornar todos os meus usários.
+        /// </summary>
+        /// <returns></returns>
+    
         [HttpGet]
         public IActionResult Get()
         {
@@ -36,8 +47,11 @@ namespace LibraryWebAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<UserDto>>(users));
         }
 
-
-        // GET api/<ValuesController>/5
+        /// <summary>
+        /// Método responsavel por retornar um único UserDTO.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {

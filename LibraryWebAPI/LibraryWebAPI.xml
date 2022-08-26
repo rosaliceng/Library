@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LibraryWebAPI</name>
+    </assembly>
+    <members>
+        <member name="T:LibraryWebAPI.Controllers.UserController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.UserController.#ctor(LibraryWebAPI.Data.IRepository,AutoMapper.IMapper)">
+            <summary>
+            
+            </summary>
+            <param name="repo"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.UserController.Get">
+            <summary>
+            Método responsavel por retornar todos os meus usários.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.UserController.GetById(System.Int32)">
+            <summary>
+            Método responsavel por retornar um único UserDTO.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
