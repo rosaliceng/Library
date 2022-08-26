@@ -30,27 +30,26 @@ namespace LibraryWebAPI
             services.AddDbContext<LibraryContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
                 );
-
             services.AddControllers()
                     .AddNewtonsoftJson(
-                        opt => opt.SerializerSettings.ReferenceLoopHandling =
-                        Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                       opt => opt.SerializerSettings.ReferenceLoopHandling =
+                       Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IRepository, Repository>();
 
             services.AddSwaggerGen(options =>
-           {
-               options.SwaggerDoc(
-                   "LibraryWepAPI",
-                   new Microsoft.OpenApi.Models.OpenApiInfo()
-                   {
-                       Title = "Libary Web API",
-                       Version = "1.0"
-                   });
-           });
-
+            {
+                options.SwaggerDoc(
+                    "librarywebapi",
+                    new Microsoft.OpenApi.Models.OpenApiInfo()
+                    {
+                        Title = "Library Web API",
+                        Version = "1.0"
+                    }
+                    );
+            });
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -63,8 +62,13 @@ namespace LibraryWebAPI
             app.UseRouting();
 
             app.UseSwagger();
+               // .UseSwaggerUI(options => {
 
-            app.UseAuthorization();
+                 //    options.SwaggerEndpoint("/swagger/librarywebpapi/swagger.json", "librarywebapi");
+                   //  options.RoutePrefix = "";
+                 //});
+
+           //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

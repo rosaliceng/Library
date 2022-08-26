@@ -1,3 +1,4 @@
+
 ﻿using LibraryWebAPI.Models;
 
 namespace LibraryWebAPI.Data
@@ -29,3 +30,5 @@ namespace LibraryWebAPI.Data
         Rent GetRentById(int userId,int bookId);
     }
 }
+
+﻿

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryWebAPI.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20220823155401_Inicial")]
+    [Migration("20220824225858_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
