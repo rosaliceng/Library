@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace LibraryWebAPI.Dto
+﻿namespace LibraryWebAPI.Dto.Publishers
 {
-    public class PublisherDto
+    public class PublisherResponseDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

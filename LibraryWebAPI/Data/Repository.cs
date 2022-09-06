@@ -1,6 +1,9 @@
-﻿using LibraryWebAPI.Models;
+﻿using LibraryWebAPI.Helpers;
+using LibraryWebAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LibraryWebAPI.Data
 {
@@ -31,10 +34,10 @@ namespace LibraryWebAPI.Data
             _context.Remove(entity);
         }
 
-      
+
         public bool SaveChanges()
         {
-           return (_context.SaveChanges()>0);
+            return (_context.SaveChanges() > 0);
         }
 
         public User[] GetAllUsers()
@@ -47,6 +50,46 @@ namespace LibraryWebAPI.Data
 
         }
 
+        public async Task<PageList<User>> GetAllUsersAsync(PageParams pageParams)
+        {
+            IQueryable<User> query = _context.Users;
+
+            query = query.AsNoTracking().OrderBy(u => u.Id);
+
+            if (!string.IsNullOrEmpty(pageParams.Name))
+            {
+                query = query.Where(user => user.Name.ToUpper().Contains(pageParams.Name.ToUpper()));
+            }
+
+            if (!string.IsNullOrEmpty(pageParams.City))
+            {
+                query = query.Where(user => user.City.ToUpper().Contains(pageParams.City.ToUpper()));
+            }
+
+            if (!string.IsNullOrEmpty(pageParams.Address))
+            {
+                query = query.Where(user => user.Address.ToUpper().Contains(pageParams.Address.ToUpper()));
+            }
+
+            if (!string.IsNullOrEmpty(pageParams.Email))
+            {
+                query = query.Where(user => user.Email.ToUpper().Contains(pageParams.Email.ToUpper()));
+            }
+
+            //return await query.ToListAsync();
+            return await PageList<User>.CreateAsync(query, pageParams.PageNumber, pageParams.PageSize);
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            IQueryable<User> query = _context.Users;
+
+            query = query.AsNoTracking()
+                .OrderBy(u => u.Email)
+                .Where(user => user.Email == email);
+
+            return query.FirstOrDefault();
+        }
         public User GetUserById(int userId)
         {
             IQueryable<User> query = _context.Users;
@@ -61,13 +104,53 @@ namespace LibraryWebAPI.Data
         public Book[] GetAllBooks()
         {
             IQueryable<Book> query = _context.Books;
-           
-                query = query.Include(b => b.Publisher);
+
+            query = query.Include(b => b.Publisher);
 
             query = query.AsNoTracking().OrderBy(b => b.Id);
 
             return query.ToArray();
         }
+
+        public async Task<PageList<Book>> GetAllBooksAsync(PageParams pageParams)
+        {
+            IQueryable<Book> query = _context.Books;
+
+            query = query.Include(b => b.Publisher);
+
+            query = query.AsNoTracking().OrderBy(b => b.Id);
+
+
+            if (!string.IsNullOrEmpty(pageParams.Name))
+            {
+                query = query.Where(book => book.Name.ToUpper().Contains(pageParams.Name.ToUpper()));
+            }
+
+            if (!string.IsNullOrEmpty(pageParams.Author))
+            {
+                query = query.Where(book => book.Author.ToUpper().Contains(pageParams.Name.ToUpper()));
+            }
+
+            if (pageParams.Launch != null)
+            {
+                query = query.Where(book => book.Launch == pageParams.Launch);
+            }
+
+            if (pageParams.Quantity != null)
+            {
+                query = query.Where(book => book.Quantity == pageParams.Quantity);
+            }
+
+            if (pageParams.TotalRented != null)
+            {
+                query = query.Where(book => book.TotalRented == pageParams.TotalRented);
+            }
+
+
+            //return await query.ToListAsync();
+            return await PageList<Book>.CreateAsync(query, pageParams.PageNumber, pageParams.PageSize);
+        }
+
 
         public Book[] GetAllBooksByPublisherId(int publisherId, bool includePublisher = false)
         {
@@ -111,6 +194,27 @@ namespace LibraryWebAPI.Data
             return query.ToArray();
         }
 
+        public async Task<PageList<Publisher>> GetAllPublishersAsync(PageParams pageParams)
+        {
+            IQueryable<Publisher> query = _context.Publishers;
+
+            query = query.AsNoTracking().OrderBy(p => p.Id);
+
+
+            if (!string.IsNullOrEmpty(pageParams.Name))
+            {
+                query = query.Where(publisher => publisher.Name.ToUpper().Contains(pageParams.Name.ToUpper()));
+            }
+
+            if (!string.IsNullOrEmpty(pageParams.City))
+            {
+                query = query.Where(publisher => publisher.City.ToUpper().Contains(pageParams.Name.ToUpper()));
+            }
+
+
+            return await PageList<Publisher>.CreateAsync(query, pageParams.PageNumber, pageParams.PageSize);
+        }
+
         public Publisher GetPublisherById(int publsiherId)
         {
             IQueryable<Publisher> query = _context.Publishers;
@@ -133,6 +237,34 @@ namespace LibraryWebAPI.Data
 
             return query.ToArray();
         }
+
+        public async Task<PageList<Rent>> GetAllRentsAsync(PageParams pageParams)
+        {
+            IQueryable<Rent> query = _context.Rents;
+
+            query = query.Include(r => r.User);
+            query = query.Include(r => r.Book).ThenInclude(b => b.Publisher);
+
+            query = query.AsNoTracking().OrderBy(r => r.Id);
+
+            if (pageParams.Quantity != null)
+            {
+                query = query.Where(book => book.RentDate == pageParams.RentDate);
+            }
+
+            if (pageParams.TotalRented != null)
+            {
+                query = query.Where(book => book.ForecastDate == pageParams.ForecastDate);
+            }
+
+            if (pageParams.TotalRented != null)
+            {
+                query = query.Where(book => book.RentDate == pageParams.RentDate);
+            }
+
+            return await PageList<Rent>.CreateAsync(query, pageParams.PageNumber, pageParams.PageSize);
+        }
+
 
         public Rent[] GetAllRentsByUserId(int userId)
         {
@@ -158,19 +290,50 @@ namespace LibraryWebAPI.Data
             return query.ToArray();
         }
 
-        public Rent GetRentById(int userId, int bookId)
+        public Rent GetRentById(int rentId)
         {
             IQueryable<Rent> query = _context.Rents;
 
             query = query.Include(l => l.User);
-            query = query.Include(l => l.Book);
+            query = query.Include(l => l.Book).ThenInclude(r => r.Publisher);
 
             query = query.AsNoTracking()
                  .OrderBy(a => a.Id)
-                 .Where(usuario => usuario.Id == userId)
-                 .Where(livro => livro.Id == bookId);
+                 .Where(user => user.Id == rentId)
+                 .Where(book => book.Id == rentId);
 
             return query.FirstOrDefault();
+        }
+
+        public Book[] GetAllBooksByPublisherId(int publisherId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Book GetBookById(int BookId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+
+        Book IRepository.GetAllBooks()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Book IRepository.GetAllBooksByPublisherId(int publisherId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Rent IRepository.GetAllRentsByUserId(int userId)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Rent IRepository.GetAllRentsByBookId(int bookId)
+        {
+            throw new System.NotImplementedException();
         }
 
     }

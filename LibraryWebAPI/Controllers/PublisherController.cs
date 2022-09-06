@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using LibraryWebAPI.Data;
 using LibraryWebAPI.Dto;
+using LibraryWebAPI.Dto.Publishers;
+using LibraryWebAPI.Helpers;
 using LibraryWebAPI.Models;
+using LibraryWebAPI.Services.Publishers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,85 +20,100 @@ namespace LibraryWebAPI.Controllers
     [Route("api/v{version:apiVersion}[controller]")]
     public class PublisherController : ControllerBase
     {
+        private readonly IPublisherService _publisherService;
+
         public readonly IRepository _repo;
 
         public readonly IMapper _mapper;
 
-        public PublisherController(IRepository repo, IMapper mapper)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="mapper"></param>
+        public PublisherController(IPublisherService service,IRepository repo, IMapper mapper)
         {
             _mapper = mapper;
             _repo = repo;
+            _publisherService = service;
 
         }
+        /// <summary>
+        /// Método responsavel por retornar todos os meus usários.
+        /// </summary>
+        /// <returns></returns>
 
-        // GET: api/<ValuesController>
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
         {
-            var publishers = _repo.GetAllPublishers();
+            var publishers = await _repo.GetAllBooksAsync(pageParams);
 
-            return Ok(_mapper.Map<IEnumerable<PublisherDto>>(publishers));
+            var publishersResult = _mapper.Map<IEnumerable<PublisherResponseDto>>(publishers);
+
+            Response.AddPagination(publishers.CurrentPage, publishers.PageSize, publishers.TotalCount, publishers.TotalPages);
+
+            return Ok(publishersResult);
         }
 
-        // GET api/<ValuesController>/5
+        /// <summary>
+        /// Método responsavel por retornar um único UserDTO.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var publisher = _repo.GetPublisherById(id);
-            if (publisher == null) return BadRequest("Resultado não encontrado!");
+            if (publisher == null) return BadRequest("Livro não encontrado!");
 
-            var publisherDto = _mapper.Map<PublisherDto>(publisher);
+            var publisherDto = _mapper.Map<PublisherResponseDto>(publisher);
 
             return Ok(publisherDto);
         }
 
         [HttpPost]
-        public IActionResult Post(PublisherDto model)
+        public IActionResult Post(PublisherRequestDto model)
         {
-            var publisher = _mapper.Map<Publisher>(model);
+            var result = _publisherService.PublisherCreate(_mapper.Map<Publisher>(model));
 
-            _repo.Add(publisher);
-            if (_repo.SaveChanges())
+            if (result != null)
             {
-                return Created($"/api/publisher/{model.Id}", _mapper.Map<PublisherDto>(publisher));
+                return Created($"/api/v1publisher/{result.Id}", _mapper.Map<PublisherResponseDto>(result));
+            }
+
+            return BadRequest("Livro não atualizado!");
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, PublisherRequestDto model)
+        {
+            var result = _publisherService.PublisherUpdate(id, _mapper.Map<Publisher>(model));
+
+            if (result != null)
+            {
+                return Created($"/api/publisher/{result.Id}", _mapper.Map<PublisherResponseDto>(result));
             }
 
             return BadRequest("Editora não cadastrada!");
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, PublisherDto model)
-        {
-            var publisher = _repo.GetPublisherById(id);
-            if (publisher == null) return BadRequest("Editora não atualizada!");
-
-            _mapper.Map(model, publisher);
-
-            _repo.Update(publisher);
-            if (_repo.SaveChanges()) ;
-            {
-                return Created($"/api/publisher/{model.Id}", _mapper.Map<PublisherDto>(publisher));
-            }
-
-            return BadRequest("Editora não atualizada!");
-        }
-
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var publishe_r = _repo.GetPublisherById(id);
-            if (publishe_r == null) return BadRequest("Resultado não encontrado!");
+            var result = _publisherService.PublisherDelete(id);
 
-            _repo.Delete(publishe_r);
-            if (_repo.SaveChanges())
+            if (result != null)
             {
-                return Ok("Editora deletada!");
+                return Ok("Editora deletada.");
             }
 
             return BadRequest("Editora não deletada!");
+
+
         }
-
-
     }
+
 }
+
+
 

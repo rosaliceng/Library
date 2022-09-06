@@ -4,19 +4,84 @@
         <name>LibraryWebAPI</name>
     </assembly>
     <members>
-        <member name="T:LibraryWebAPI.Controllers.UserController">
+        <member name="T:LibraryWebAPI.Controllers.BookController">
             <summary>
             
             </summary>
         </member>
-        <member name="M:LibraryWebAPI.Controllers.UserController.#ctor(LibraryWebAPI.Data.IRepository,AutoMapper.IMapper)">
+        <member name="M:LibraryWebAPI.Controllers.BookController.#ctor(LibraryWebAPI.Services.Books.IBookService,LibraryWebAPI.Data.IRepository,AutoMapper.IMapper)">
             <summary>
             
             </summary>
             <param name="repo"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:LibraryWebAPI.Controllers.UserController.Get">
+        <member name="M:LibraryWebAPI.Controllers.BookController.Get(LibraryWebAPI.Helpers.PageParams)">
+            <summary>
+            Método responsavel por retornar todos os meus usários.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.BookController.GetById(System.Int32)">
+            <summary>
+            Método responsavel por retornar um único UserDTO.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.PublisherController.#ctor(LibraryWebAPI.Services.Publishers.IPublisherService,LibraryWebAPI.Data.IRepository,AutoMapper.IMapper)">
+            <summary>
+            
+            </summary>
+            <param name="repo"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.PublisherController.Get(LibraryWebAPI.Helpers.PageParams)">
+            <summary>
+            Método responsavel por retornar todos os meus usários.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.PublisherController.GetById(System.Int32)">
+            <summary>
+            Método responsavel por retornar um único UserDTO.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.RentController.#ctor(LibraryWebAPI.Services.Rents.IRentService,LibraryWebAPI.Data.IRepository,AutoMapper.IMapper)">
+            <summary>
+            
+            </summary>
+            <param name="repo"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.RentController.Get(LibraryWebAPI.Helpers.PageParams)">
+            <summary>
+            Método responsavel por retornar todos os meus usários.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.RentController.GetById(System.Int32)">
+            <summary>
+            Método responsavel por retornar um único UserDTO.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryWebAPI.Controllers.UserController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.UserController.#ctor(LibraryWebAPI.Services.Users.IUserService,LibraryWebAPI.Data.IRepository,AutoMapper.IMapper)">
+            <summary>
+            
+            </summary>
+            <param name="repo"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:LibraryWebAPI.Controllers.UserController.Get(LibraryWebAPI.Helpers.PageParams)">
             <summary>
             Método responsavel por retornar todos os meus usários.
             </summary>

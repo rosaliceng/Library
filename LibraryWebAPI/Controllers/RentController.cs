@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using LibraryWebAPI.Data;
 using LibraryWebAPI.Dto;
+using LibraryWebAPI.Dto.Rents;
+using LibraryWebAPI.Helpers;
 using LibraryWebAPI.Models;
+using LibraryWebAPI.Services.Rents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,64 +20,76 @@ namespace LibraryWebAPI.Controllers
     [Route("api/v{version:apiVersion}[controller]")]
     public class RentController : ControllerBase
     {
+        private readonly IRentService _rentService;
+
         public readonly IRepository _repo;
 
         public readonly IMapper _mapper;
-
-        public RentController(IRepository repo, IMapper mapper)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="mapper"></param>
+        public RentController(IRentService service,IRepository repo, IMapper mapper)
         {
             _mapper = mapper;
             _repo = repo;
+            _rentService = service;
 
         }
-        // GET: api/<ValuesController>
+        /// <summary>
+        /// Método responsavel por retornar todos os meus usários.
+        /// </summary>
+        /// <returns></returns>
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
         {
-            var rents = _repo.GetAllRents();
+            var rents = await _repo.GetAllRentsAsync(pageParams);
 
-            return Ok(_mapper.Map<IEnumerable<RentDto>>(rents));
+            var rentsResult = _mapper.Map<IEnumerable<RentResponseDto>>(rents);
+
+            Response.AddPagination(rents.CurrentPage, rents.PageSize, rents.TotalCount, rents.TotalPages);
+
+            return Ok(rentsResult);
         }
 
-        // GET api/<ValuesController>/5
+        /// <summary>
+        /// Método responsavel por retornar um único UserDTO.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var rent = _repo.GetRentById(id, id);
+            var rent = _repo.GetRentById(id);
             if (rent == null) return BadRequest("Aluguel não encontrado!");
 
-            var rentDto = _mapper.Map<RentDto>(rent);
+            var rentDto = _mapper.Map<RentResponseDto>(rent);
 
             return Ok(rentDto);
         }
 
         [HttpPost]
-        public IActionResult Post(RentDto model)
+        public IActionResult Post(RentRequestDto model)
         {
-            var rent = _mapper.Map<Rent>(model);
+            var result = _rentService.RentCreate(_mapper.Map<Rent>(model));
 
-            _repo.Add(rent);
-            if (_repo.SaveChanges())
+            if (result != null)
             {
-                return Created($"/api/rent/{model.Id}", _mapper.Map<RentDto>(rent));
+                return Created($"/api/v1rental/{result.Id}", _mapper.Map<RentResponseDto>(result));
             }
-
             return BadRequest("Aluguel não cadastrado!");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, RentDto model)
+        public IActionResult Put(int id, RentDevolutionDto model)
         {
-            var rent = _repo.GetRentById(id,id);
-            if (rent == null) return BadRequest("Usuário não encontrado!");
+            var result = _rentService.RentUpdate(id, _mapper.Map<Rent>(model));
 
-            _mapper.Map(model, rent);
-
-            _repo.Update(rent);
-            if (_repo.SaveChanges())
+            if (result != null)
             {
-                return Created($"/api/rent/{model.Id}", _mapper.Map<RentDto>(rent));
+                return Created($"/api/v1rental/{result.Id}", _mapper.Map<RentResponseDto>(result));
             }
 
             return BadRequest("Aluguel não cadastrado!");
@@ -82,13 +98,11 @@ namespace LibraryWebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var ren_t = _repo.GetRentById(id,id);
-            if (ren_t == null) return BadRequest("Aluguel não encontrado!");
+            var result = _rentService.RentDelete(id);
 
-            _repo.Delete(ren_t);
-            if (_repo.SaveChanges())
+            if (result != null)
             {
-                return Ok("Aluguel deletado!");
+                return Ok("Rental deletado.");
             }
 
             return BadRequest("Aluguel não deletado!");

@@ -1,4 +1,6 @@
+using FluentValidation.AspNetCore;
 using LibraryWebAPI.Data;
+using LibraryWebAPI.Models.Validator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -31,12 +33,18 @@ namespace LibraryWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<LibraryContext>(
-                context => context.UseSqlite(Configuration.GetConnectionString("Default"))
+                context => context.UseMySql(Configuration.GetConnectionString("MySqlConnection"))
                 );
             services.AddControllers()
+                    .AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<UserValidator>())
+                    .AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<BookValidator>())
+                    .AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<PublisherValidator>())
+                    .AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<RentValidator>())
                     .AddNewtonsoftJson(
                        opt => opt.SerializerSettings.ReferenceLoopHandling =
                        Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

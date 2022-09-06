@@ -42,10 +42,10 @@ namespace LibraryWebAPI.Data
 
             builder.Entity<Rent>()
                 .HasData(new List<Rent>(){
-                    new Rent(1, 1, 1, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022")),
-                    new Rent(2, 2, 3, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022")),
-                    new Rent(3, 4, 4, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022")),
-                    new Rent(4, 3, 2, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022")),
+                    new Rent(1, 1, 1, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022"),false),
+                    new Rent(2, 2, 3, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022"),false),
+                    new Rent(3, 4, 4, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022"),false),
+                    new Rent(4, 3, 2, DateTime.Parse("22/08/2022"), DateTime.Parse("22/08/2022"),  DateTime.Parse("22/08/2022"),false),
                 });
         }
 

@@ -1,5 +1,8 @@
 
-﻿using LibraryWebAPI.Models;
+using LibraryWebAPI.Helpers;
+using LibraryWebAPI.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LibraryWebAPI.Data
 {
@@ -11,23 +14,28 @@ namespace LibraryWebAPI.Data
         bool SaveChanges();
 
         //Usuários
+        Task<PageList<User>> GetAllUsersAsync(PageParams pageParams);
         User[] GetAllUsers();
+        User GetUserByEmail(string email);
         User GetUserById(int userId);
 
         //Livros
-        Book[] GetAllBooks();
-        Book[] GetAllBooksByPublisherId(int publsiherId, bool includePublsiher = false);
-        Book GetBookById(int publsiherId, bool includePublsiher = false);
-        
+        Task<PageList<Book>> GetAllBooksAsync(PageParams pageParams);
+        Book GetAllBooks();
+        Book GetAllBooksByPublisherId(int publisherId);
+        Book GetBookById(int BookId);
+
         //Editoras
+        Task<PageList<Publisher>> GetAllPublishersAsync(PageParams pageParams);
         Publisher[] GetAllPublishers();
         Publisher GetPublisherById(int publsiherId);
 
         //Alugueis
+        Task<PageList<Rent>> GetAllRentsAsync(PageParams pageParams);
         Rent[] GetAllRents();
-        Rent[] GetAllRentsByUserId(int userId);
-        Rent[] GetAllRentsByBookId(int bookId); 
-        Rent GetRentById(int userId,int bookId);
+        Rent GetAllRentsByUserId(int userId);
+        Rent GetAllRentsByBookId(int bookId); 
+        Rent GetRentById(int rentId);
     }
 }
 

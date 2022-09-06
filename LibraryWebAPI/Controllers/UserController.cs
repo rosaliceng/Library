@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using LibraryWebAPI.Data;
 using LibraryWebAPI.Dto;
+using LibraryWebAPI.Dto.Users;
+using LibraryWebAPI.Helpers;
 using LibraryWebAPI.Models;
+using LibraryWebAPI.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,20 +23,21 @@ namespace LibraryWebAPI.Controllers
     [Route("api/v{version:apiVersion}[controller]")]
     public class UserController : ControllerBase
     {
+        private readonly IUserService _userService;
 
         public readonly IRepository _repo;
 
         public readonly IMapper _mapper;
-        /// <summary>
+       /// <summary>
         /// 
         /// </summary>
         /// <param name="repo"></param>
         /// <param name="mapper"></param>
-        public UserController(IRepository repo,IMapper mapper)
-        {
+        public UserController(IUserService service,IRepository repo,IMapper mapper)
+        { 
             _mapper = mapper;
             _repo = repo;
-           
+            _userService = service;
         }
         /// <summary>
         /// Método responsavel por retornar todos os meus usários.
@@ -40,11 +45,15 @@ namespace LibraryWebAPI.Controllers
         /// <returns></returns>
     
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
         {
-            var  users = _repo.GetAllUsers();
+            var  users = await _repo.GetAllUsersAsync(pageParams);
 
-            return Ok(_mapper.Map<IEnumerable<UserDto>>(users));
+            var usersResult = _mapper.Map<IEnumerable<UserResponseDto>>(users);
+
+            Response.AddPagination(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
+
+            return Ok(usersResult);
         }
 
         /// <summary>
@@ -58,55 +67,45 @@ namespace LibraryWebAPI.Controllers
             var user = _repo.GetUserById(id);
             if (user == null) return BadRequest("Usuário não encontrado!");
 
-            var userDto = _mapper.Map<UserDto>(user);
+            var userDto = _mapper.Map<UserResponseDto>(user);
 
             return Ok(userDto);
         }
 
         [HttpPost]
-        public IActionResult Post(UserDto model)
+        public IActionResult Post(UserRequestDto model)
         {
-            var user = _mapper.Map<User>(model);
+            var result = _userService.UserCreate(_mapper.Map<User>(model));
 
-            _repo.Add(user);
-            if (_repo.SaveChanges())
+            if (result != null)
             {
-                return Created($"/api/user/{model.Id}", _mapper.Map<UserDto>(user));
+                return Created($"/api/v1user/{result.Id}", _mapper.Map<UserResponseDto>(result));
+            }
+            return BadRequest("Usuário não cadastrado!");
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, UserRequestDto model)
+        {
+            var result = _userService.UserUpdate(id, _mapper.Map<User>(model));
+
+            if (result != null)
+            {
+                return Created($"/api/user/{result.Id}", _mapper.Map<UserResponseDto>(result));
             }
 
             return BadRequest("Usuário não atualizado!");
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, UserDto model)
-        {
-            var user = _repo.GetUserById(id);
-            if (user == null) return BadRequest("Usuário não cadastrado!");
-
-            _mapper.Map(model, user);
-
-
-            _repo.Update(user);
-            if (_repo.SaveChanges())
-            {
-                return Created($"/api/user/{model.Id}", _mapper.Map<UserDto>(user));
-            }
-
-            return BadRequest("Usuário não cadastrado!");
-        }
-
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var user = _repo.GetUserById(id);
-            if (user == null) return BadRequest("Usuário não encontrado!");
+            var result = _userService.UserDelete(id);
 
-            _repo.Delete(user);
-            if (_repo.SaveChanges())
+            if (result != null)
             {
-                return Ok("Usuário deletado!");
+                return Ok("User deleted.");
             }
-
             return BadRequest("Usuário não deletado!");
 
 
