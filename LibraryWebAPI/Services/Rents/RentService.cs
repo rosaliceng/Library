@@ -24,7 +24,7 @@ namespace LibraryWebAPI.Services.Rents
             }
 
             var updateBook = _repo.GetBookById(model.BookId);
-            if (updateBook.Quantity > 1)
+            if (updateBook.Quantity < 1)
             {
                 return null;
             }
@@ -40,7 +40,7 @@ namespace LibraryWebAPI.Services.Rents
                 return null;
             }
 
-            if (model.DevolutionDate.Date < model.RentDate.Date)
+            if (model.ForecastDate.Date < model.RentDate.Date)
             {
                 return null;
             }
@@ -59,7 +59,7 @@ namespace LibraryWebAPI.Services.Rents
             return null;
         }
 
-        public Rent RentalUpdate(int rentId, Rent model)
+        public Rent RentUpdate(int rentId, Rent model)
         {
             var rent = _repo.GetRentById(rentId);
             if (rent == null)
@@ -135,10 +135,7 @@ namespace LibraryWebAPI.Services.Rents
             return null;
         }
 
-        public Rent RentUpdate(int rentalId, Rent model)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }
 

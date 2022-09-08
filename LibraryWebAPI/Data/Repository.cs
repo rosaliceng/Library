@@ -152,35 +152,29 @@ namespace LibraryWebAPI.Data
         }
 
 
-        public Book[] GetAllBooksByPublisherId(int publisherId, bool includePublisher = false)
+        public Book GetAllBooksByPublisherId(int publisherId)
         {
             IQueryable<Book> query = _context.Books;
 
-            if (includePublisher)
-            {
-                query = query.Include(b => b.Publisher);
-            }
+            query = query.Include(b => b.Publisher);
 
             query = query.AsNoTracking()
                 .OrderBy(b => b.Id)
                 .Where(publisher => publisher.Id == publisherId);
 
-            return query.ToArray();
+            return query.FirstOrDefault();
         }
 
 
-        public Book GetBookById(int publisherId, bool includePublisher = false)
+        public Book GetBookById(int bookId)
         {
             IQueryable<Book> query = _context.Books;
 
-            if (includePublisher)
-            {
-                query = query.Include(b => b.Publisher);
-            }
+            query = query.Include(b => b.Publisher);
 
             query = query.AsNoTracking()
                 .OrderBy(b => b.Id)
-                .Where(publisher => publisher.Id == publisherId);
+                .Where(publisher => publisher.Id == bookId);
 
             return query.FirstOrDefault();
         }
@@ -214,14 +208,23 @@ namespace LibraryWebAPI.Data
 
             return await PageList<Publisher>.CreateAsync(query, pageParams.PageNumber, pageParams.PageSize);
         }
+        public Publisher GetPublisherByName(string name)
+        {
+            IQueryable<Publisher> query = _context.Publishers;
 
-        public Publisher GetPublisherById(int publsiherId)
+            query = query.AsNoTracking()
+                .OrderBy(p => p.Name)
+                .Where(publisher => publisher.Name == name);
+
+            return query.FirstOrDefault();
+        }
+        public Publisher GetPublisherById(int publisherId)
         {
             IQueryable<Publisher> query = _context.Publishers;
 
             query = query.AsNoTracking()
                 .OrderBy(p => p.Id)
-                .Where(publisher => publisher.Id == publsiherId);
+                .Where(publisher => publisher.Id == publisherId);
 
             return query.FirstOrDefault();
         }
@@ -231,7 +234,7 @@ namespace LibraryWebAPI.Data
             IQueryable<Rent> query = _context.Rents;
 
             query = query.Include(r => r.User);
-            query = query.Include(r => r.Book).ThenInclude(b => b.Publisher);
+            query = query.Include(r => r.Book).ThenInclude(r => r.Publisher);
 
             query = query.AsNoTracking().OrderBy(r => r.Id);
 
@@ -266,7 +269,7 @@ namespace LibraryWebAPI.Data
         }
 
 
-        public Rent[] GetAllRentsByUserId(int userId)
+        public Rent GetAllRentsByUserId(int userId)
         {
             IQueryable<Rent> query = _context.Rents;
 
@@ -274,28 +277,30 @@ namespace LibraryWebAPI.Data
 
             query = query.AsNoTracking()
                   .OrderBy(r => r.Id)
-                  .Where(user => user.Id == userId);
+                  .Where(user => user.User.Id == userId);
 
-            return query.ToArray();
+            return query.FirstOrDefault();
         }
 
-        public Rent[] GetAllRentsByBookId(int bookId)
+        public Rent GetAllRentsByBookId(int bookId)
         {
             IQueryable<Rent> query = _context.Rents;
 
-            query = query.AsNoTracking()
-                  .OrderBy(r => r.Id)
-                  .Where(book => book.Id == bookId);
+            query = query.Include(r => r.Book);
 
-            return query.ToArray();
+            query = query.AsNoTracking()
+                  .OrderBy(r => r.BookId)
+                  .Where(book => book.BookId == bookId);
+
+            return query.FirstOrDefault();
         }
 
         public Rent GetRentById(int rentId)
         {
             IQueryable<Rent> query = _context.Rents;
 
-            query = query.Include(l => l.User);
-            query = query.Include(l => l.Book).ThenInclude(r => r.Publisher);
+            query = query.Include(r => r.User);
+            query = query.Include(r => r.Book).ThenInclude(r => r.Publisher);
 
             query = query.AsNoTracking()
                  .OrderBy(a => a.Id)
@@ -305,36 +310,8 @@ namespace LibraryWebAPI.Data
             return query.FirstOrDefault();
         }
 
-        public Book[] GetAllBooksByPublisherId(int publisherId)
-        {
-            throw new System.NotImplementedException();
-        }
+       }
 
-        public Book GetBookById(int BookId)
-        {
-            throw new System.NotImplementedException();
-        }
+ }
 
-
-        Book IRepository.GetAllBooks()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        Book IRepository.GetAllBooksByPublisherId(int publisherId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        Rent IRepository.GetAllRentsByUserId(int userId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        Rent IRepository.GetAllRentsByBookId(int bookId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-    }
-}
+   

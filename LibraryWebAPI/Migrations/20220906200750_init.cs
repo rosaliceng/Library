@@ -72,7 +72,8 @@ namespace LibraryWebAPI.Migrations
                     BookId = table.Column<int>(nullable: false),
                     RentDate = table.Column<DateTime>(nullable: false),
                     ForecastDate = table.Column<DateTime>(nullable: false),
-                    DevolutionDate = table.Column<DateTime>(nullable: false)
+                    DevolutionDate = table.Column<DateTime>(nullable: false),
+                    ReturnedBook = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -126,13 +127,13 @@ namespace LibraryWebAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "Rents",
-                columns: new[] { "Id", "BookId", "DevolutionDate", "ForecastDate", "RentDate", "UserId" },
+                columns: new[] { "Id", "BookId", "DevolutionDate", "ForecastDate", "RentDate", "ReturnedBook", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
-                    { 3, 4, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), 4 },
-                    { 4, 2, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), 3 },
-                    { 2, 3, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), 2 }
+                    { 1, 1, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1 },
+                    { 3, 4, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 4 },
+                    { 4, 2, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 3 },
+                    { 2, 3, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 2 }
                 });
 
             migrationBuilder.CreateIndex(

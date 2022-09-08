@@ -77,7 +77,7 @@ namespace LibraryWebAPI.Controllers
 
             if (result != null)
             {
-                return Created($"/api/v1rental/{result.Id}", _mapper.Map<RentResponseDto>(result));
+                return Created($"/api/v1rent/{result.Id}", _mapper.Map<RentResponseDto>(result));
             }
             return BadRequest("Aluguel não cadastrado!");
         }
@@ -89,10 +89,10 @@ namespace LibraryWebAPI.Controllers
 
             if (result != null)
             {
-                return Created($"/api/v1rental/{result.Id}", _mapper.Map<RentResponseDto>(result));
+                return Created($"/api/v1rent/{result.Id}", _mapper.Map<RentResponseDto>(result));
             }
 
-            return BadRequest("Aluguel não cadastrado!");
+            return BadRequest("Aluguel não atualizado!");
         }
 
         [HttpDelete("{id}")]
@@ -102,7 +102,7 @@ namespace LibraryWebAPI.Controllers
 
             if (result != null)
             {
-                return Ok("Rental deletado.");
+                return Ok("Aluguel deletado.");
             }
 
             return BadRequest("Aluguel não deletado!");

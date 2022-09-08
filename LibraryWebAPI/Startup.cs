@@ -1,6 +1,10 @@
 using FluentValidation.AspNetCore;
 using LibraryWebAPI.Data;
 using LibraryWebAPI.Models.Validator;
+using LibraryWebAPI.Services.Books;
+using LibraryWebAPI.Services.Publishers;
+using LibraryWebAPI.Services.Rents;
+using LibraryWebAPI.Services.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +52,12 @@ namespace LibraryWebAPI
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IRepository, Repository>(); 
+            services.AddScoped<IUserService, UserService>(); 
+            services.AddScoped<IBookService, BookService>(); 
+            services.AddScoped<IPublisherService, PublisherService>(); 
+            services.AddScoped<IRentService, RentService>(); 
+           
 
             services.AddVersionedApiExplorer(options =>
             {
@@ -77,7 +86,7 @@ namespace LibraryWebAPI
                    }
                    );
                 }
-
+                
                
                 var xmlCommentsFiles = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFiles);

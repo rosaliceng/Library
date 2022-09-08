@@ -151,6 +151,9 @@ namespace LibraryWebAPI.Migrations
                     b.Property<DateTime>("RentDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<bool?>("ReturnedBook")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -170,6 +173,7 @@ namespace LibraryWebAPI.Migrations
                             DevolutionDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ForecastDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RentDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReturnedBook = false,
                             UserId = 1
                         },
                         new
@@ -179,6 +183,7 @@ namespace LibraryWebAPI.Migrations
                             DevolutionDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ForecastDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RentDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReturnedBook = false,
                             UserId = 2
                         },
                         new
@@ -188,6 +193,7 @@ namespace LibraryWebAPI.Migrations
                             DevolutionDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ForecastDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RentDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReturnedBook = false,
                             UserId = 4
                         },
                         new
@@ -197,6 +203,7 @@ namespace LibraryWebAPI.Migrations
                             DevolutionDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ForecastDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RentDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ReturnedBook = false,
                             UserId = 3
                         });
                 });

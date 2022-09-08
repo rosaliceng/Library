@@ -46,7 +46,7 @@ namespace LibraryWebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
         {
-            var publishers = await _repo.GetAllBooksAsync(pageParams);
+            var publishers = await _repo.GetAllPublishersAsync(pageParams);
 
             var publishersResult = _mapper.Map<IEnumerable<PublisherResponseDto>>(publishers);
 
@@ -81,7 +81,7 @@ namespace LibraryWebAPI.Controllers
                 return Created($"/api/v1publisher/{result.Id}", _mapper.Map<PublisherResponseDto>(result));
             }
 
-            return BadRequest("Livro não atualizado!");
+            return BadRequest("Editora não cadastrada!");
         }
 
         [HttpPut("{id}")]
@@ -94,7 +94,7 @@ namespace LibraryWebAPI.Controllers
                 return Created($"/api/publisher/{result.Id}", _mapper.Map<PublisherResponseDto>(result));
             }
 
-            return BadRequest("Editora não cadastrada!");
+            return BadRequest("Editora não atualizada!");
         }
 
         [HttpDelete("{id}")]

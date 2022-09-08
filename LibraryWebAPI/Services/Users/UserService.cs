@@ -69,8 +69,8 @@ namespace LibraryWebAPI.Services.Users
                 return null;
             }
 
-            var checkRental = _repo.GetAllRentsByUserId(userId);
-            if (checkRental != null)
+            var checkRent= _repo.GetAllRentsByUserId(userId);
+            if (checkRent != null)
             {
                 return null;
             }

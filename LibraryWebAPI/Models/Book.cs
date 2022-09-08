@@ -4,6 +4,7 @@ namespace LibraryWebAPI.Models
 {
     public class Book
     {
+        public Book() { }
         public Book(int id,
                     string name,
                     string author,

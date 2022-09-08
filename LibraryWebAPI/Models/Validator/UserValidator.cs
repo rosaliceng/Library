@@ -13,7 +13,7 @@ namespace LibraryWebAPI.Models.Validator
                 .WithMessage("Este campo é obrigatório!")
                 .MinimumLength(3)
                 .WithMessage("Mínimo de 3 caracteres.")
-                .MaximumLength(3)
+                .MaximumLength(80)
                 .WithMessage("Máximo de 80 caracteres.");
 
             RuleFor(u => u.City)
@@ -21,7 +21,7 @@ namespace LibraryWebAPI.Models.Validator
                 .WithMessage("Este campo é obrigatório!")
                 .MinimumLength(3)
                 .WithMessage("Mínimo de 3 caracteres.")
-                .MaximumLength(3)
+                .MaximumLength(80)
                 .WithMessage("Máximo de 80 caracteres.");
 
             RuleFor(u => u.City)
@@ -29,7 +29,7 @@ namespace LibraryWebAPI.Models.Validator
                 .WithMessage("Este campo é obrigatório!")
                 .MinimumLength(3)
                 .WithMessage("Mínimo de 3 caracteres.")
-                .MaximumLength(3)
+                .MaximumLength(80)
                 .WithMessage("Máximo de 80 caracteres.");
 
             RuleFor(u => u.Email)

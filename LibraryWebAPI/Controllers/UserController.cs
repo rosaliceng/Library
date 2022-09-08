@@ -45,7 +45,7 @@ namespace LibraryWebAPI.Controllers
         /// <returns></returns>
     
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
+        public async Task<IActionResult> Get([FromQuery] PageParams pageParams) 
         {
             var  users = await _repo.GetAllUsersAsync(pageParams);
 
@@ -104,7 +104,7 @@ namespace LibraryWebAPI.Controllers
 
             if (result != null)
             {
-                return Ok("User deleted.");
+                return Ok("Usuário deletado.");
             }
             return BadRequest("Usuário não deletado!");
 

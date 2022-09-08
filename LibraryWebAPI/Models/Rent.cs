@@ -21,7 +21,7 @@ namespace LibraryWebAPI.Models
             this.ForecastDate = forecastDate;
             this.DevolutionDate = devolutionDate;
             this.ReturnedBook = returnedBook;
-            this.ReturnedBook = returnedBook;
+            
         }
 
         public int Id { get; set; }
@@ -32,7 +32,7 @@ namespace LibraryWebAPI.Models
         public DateTime RentDate { get; set;}
         public DateTime ForecastDate { get; set; }
         public DateTime DevolutionDate { get; set; }
-        public bool ReturnedBook { get; set; }
+        public bool? ReturnedBook { get; set; }
 
 
 

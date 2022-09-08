@@ -106,7 +106,7 @@ namespace LibraryWebAPI.Controllers
             _repo.Delete(book);
             if (_repo.SaveChanges())
             {
-                return Ok("Usuário deletado!");
+                return Ok("Livro deletado!");
             }
 
             return BadRequest("Livro não deletado!");

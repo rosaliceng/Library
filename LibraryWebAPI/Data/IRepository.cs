@@ -21,14 +21,15 @@ namespace LibraryWebAPI.Data
 
         //Livros
         Task<PageList<Book>> GetAllBooksAsync(PageParams pageParams);
-        Book GetAllBooks();
+        Book[] GetAllBooks();
         Book GetAllBooksByPublisherId(int publisherId);
         Book GetBookById(int BookId);
 
         //Editoras
         Task<PageList<Publisher>> GetAllPublishersAsync(PageParams pageParams);
         Publisher[] GetAllPublishers();
-        Publisher GetPublisherById(int publsiherId);
+        Publisher GetPublisherByName(string name);
+        Publisher GetPublisherById(int publisherId);
 
         //Alugueis
         Task<PageList<Rent>> GetAllRentsAsync(PageParams pageParams);
