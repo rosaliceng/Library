@@ -17,7 +17,7 @@ namespace LibraryWebAPI.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class PublisherController : ControllerBase
     {
         private readonly IPublisherService _publisherService;
@@ -78,7 +78,7 @@ namespace LibraryWebAPI.Controllers
 
             if (result != null)
             {
-                return Created($"/api/v1publisher/{result.Id}", _mapper.Map<PublisherResponseDto>(result));
+                return Created($"/api/v1/publisher/{result.Id}", _mapper.Map<PublisherResponseDto>(result));
             }
 
             return BadRequest("Editora não cadastrada!");

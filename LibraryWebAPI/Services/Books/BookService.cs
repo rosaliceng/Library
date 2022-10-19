@@ -22,7 +22,7 @@ namespace LibraryWebAPI.Services.Books
                 return null;
             }
 
-            if (model.Quantity < 1)
+            if (model.Quantity < 0) 
             {
                 return null;
             }
@@ -51,8 +51,14 @@ namespace LibraryWebAPI.Services.Books
             {
                 return null;
             }
+            model.TotalRented = book.TotalRented;
+            if (model.TotalRented != book.TotalRented)
+            {
+                return null;
+            }
 
-            if (model.Quantity < 1)
+
+            if (model.Quantity < 0) 
             {
                 return null;
             }
@@ -74,8 +80,8 @@ namespace LibraryWebAPI.Services.Books
                 return null;
             }
 
-            var checkRental = _repo.GetAllRentsByBookId(bookId);
-            if (checkRental != null)
+            var checkRent = _repo.GetAllRentsByBookId(bookId);
+            if (checkRent != null)
             {
                 return null;
             }

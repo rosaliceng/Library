@@ -49,7 +49,8 @@ namespace LibraryWebAPI.Migrations
                     PublisherId = table.Column<int>(nullable: false),
                     Launch = table.Column<DateTime>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
-                    TotalRented = table.Column<int>(nullable: false)
+                    TotalRented = table.Column<int>(nullable: false),
+                    MaxRented = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,8 +73,7 @@ namespace LibraryWebAPI.Migrations
                     BookId = table.Column<int>(nullable: false),
                     RentDate = table.Column<DateTime>(nullable: false),
                     ForecastDate = table.Column<DateTime>(nullable: false),
-                    DevolutionDate = table.Column<DateTime>(nullable: false),
-                    ReturnedBook = table.Column<bool>(nullable: true)
+                    DevolutionDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -108,32 +108,35 @@ namespace LibraryWebAPI.Migrations
                 columns: new[] { "Id", "Address", "City", "Email", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Rua A", "Fortaleza", "rosa@gmail.com", "Rosa" },
-                    { 2, "Rua B", "Caucaia", "alice@gmail.com", "Alice" },
-                    { 3, "Rua C", "Fortaleza", "andre@gmail.com", "André" },
-                    { 4, "Rua D", "Fortaleza", "naua@gmail.com", "Nauã" }
+                    { 1, "Rua A", "Fortaleza", "rosa@gmail.com", "Rosalice Nogueira" },
+                    { 2, "Rua B", "Caucaia", "ana@gmail.com", "Ana Pontes" },
+                    { 3, "Rua C", "Fortaleza", "andre@gmail.com", "André Vieira" },
+                    { 4, "Rua Gorvenador Sampaio", "São Paulo", "marcos@gmail.com", "Marcos Aurélio" },
+                    { 5, "Rua D", "Rio de Janeiro", "antonia@gmail.com", "Antonia Villela" },
+                    { 6, "Rua Avelino Marçal", "Aquiraz", "juarez@gmail.com", "Juarez Fernandez" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Books",
-                columns: new[] { "Id", "Author", "Launch", "Name", "PublisherId", "Quantity", "TotalRented" },
+                columns: new[] { "Id", "Author", "Launch", "MaxRented", "Name", "PublisherId", "Quantity", "TotalRented" },
                 values: new object[,]
                 {
-                    { 1, "Jk Rowling", new DateTime(2000, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "Harry Potter e o Cálice de fogo", 1, 10, 23 },
-                    { 4, "Rick Riordan", new DateTime(2005, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Percy Jackson e o Ladrão de raios", 2, 3, 23 },
-                    { 2, "Drauzio Varella", new DateTime(1999, 6, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "Estação Carandiru", 3, 68, 90 },
-                    { 3, "Antoine de Saint-Exupéry", new DateTime(1943, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "O pequeno príncipe", 4, 10, 36 }
+                    { 1, "Jk Rowling", new DateTime(2000, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, "Harry Potter e o Cálice de fogo", 1, 10, 1 },
+                    { 2, "Drauzio Varella", new DateTime(1999, 6, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, "Estação Carandiru", 3, 68, 2 },
+                    { 3, "Antoine de Saint-Exupéry", new DateTime(1943, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, "O pequeno príncipe", 4, 10, 1 },
+                    { 4, " Robert Cecil Martin", new DateTime(2008, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, "Code Clean", 4, 10, 1 },
+                    { 5, "Margareth Mitchell", new DateTime(1999, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, "E o vento levou", 4, 10, 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Rents",
-                columns: new[] { "Id", "BookId", "DevolutionDate", "ForecastDate", "RentDate", "ReturnedBook", "UserId" },
+                columns: new[] { "Id", "BookId", "DevolutionDate", "ForecastDate", "RentDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1 },
-                    { 3, 4, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 4 },
-                    { 4, 2, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 3 },
-                    { 2, 3, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 2 }
+                    { 1, 1, new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 },
+                    { 3, 2, new DateTime(2022, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3 },
+                    { 2, 3, new DateTime(2022, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), 2 },
+                    { 4, 4, new DateTime(2022, 10, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2022, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), 6 }
                 });
 
             migrationBuilder.CreateIndex(

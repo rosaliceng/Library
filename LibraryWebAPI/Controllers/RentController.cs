@@ -17,7 +17,7 @@ namespace LibraryWebAPI.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class RentController : ControllerBase
     {
         private readonly IRentService _rentService;
@@ -77,22 +77,22 @@ namespace LibraryWebAPI.Controllers
 
             if (result != null)
             {
-                return Created($"/api/v1rent/{result.Id}", _mapper.Map<RentResponseDto>(result));
+                return Created($"/api/v1/rent/{result.Id}", _mapper.Map<RentResponseDto>(result));
             }
             return BadRequest("Aluguel não cadastrado!");
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, RentDevolutionDto model)
+        public IActionResult Put( RentDevolutionDto model)
         {
-            var result = _rentService.RentUpdate(id, _mapper.Map<Rent>(model));
+            var result = _rentService.RentUpdate(_mapper.Map<Rent>(model));
 
             if (result != null)
             {
-                return Created($"/api/v1rent/{result.Id}", _mapper.Map<RentResponseDto>(result));
+                return Created($"/api/rent/{result.Id}", _mapper.Map<RentResponseDto>(result));
             }
 
-            return BadRequest("Aluguel não atualizado!");
+            return BadRequest("Não foi possível atualizar aluguel.");
         }
 
         [HttpDelete("{id}")]

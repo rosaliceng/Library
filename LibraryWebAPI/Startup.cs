@@ -56,8 +56,14 @@ namespace LibraryWebAPI
             services.AddScoped<IUserService, UserService>(); 
             services.AddScoped<IBookService, BookService>(); 
             services.AddScoped<IPublisherService, PublisherService>(); 
-            services.AddScoped<IRentService, RentService>(); 
-           
+            services.AddScoped<IRentService, RentService>();
+
+            services.AddCors(options => {
+                options.AddPolicy("AllowsSpecificOrigin",
+                    builder => builder.WithOrigins("https://localhost:8080/",
+                    "http://192.168.0.17:8080/",
+                    "http://librarywdarns.loca.lt/"));
+            });
 
             services.AddVersionedApiExplorer(options =>
             {
@@ -120,6 +126,13 @@ namespace LibraryWebAPI
                 
                     options.RoutePrefix = "";
                 });
+
+            app.UseCors(
+                x => x.AllowAnyOrigin()
+                     .AllowAnyMethod()
+                     .AllowAnyHeader()
+
+                );
 
            //app.UseAuthorization();
 

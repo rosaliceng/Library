@@ -11,7 +11,8 @@ namespace LibraryWebAPI.Models
                     int publisherId, 
                     DateTime launch, 
                     int quantity,
-                    int totalRented)
+                    int totalRented,
+                    int maxRented)
         {
             this.Id = id;
             this.Name = name;
@@ -20,6 +21,7 @@ namespace LibraryWebAPI.Models
             this.Launch = launch;
             this.Quantity = quantity;
             this.TotalRented = totalRented;
+            this.MaxRented = maxRented;
         }
 
         public int Id { get; set; }
@@ -30,9 +32,6 @@ namespace LibraryWebAPI.Models
         public DateTime Launch { get; set;}
         public int Quantity { get; set; }
         public int TotalRented { get; set; }
-
-
-
-
+        public int MaxRented { get; internal set; }
     }
 }

@@ -94,7 +94,7 @@ namespace LibraryWebAPI.Data
         {
             IQueryable<User> query = _context.Users;
 
-            query = query.AsNoTracking()
+            query = query
                   .OrderBy(u => u.Id)
                   .Where(user => user.Id == userId);
 
@@ -165,6 +165,16 @@ namespace LibraryWebAPI.Data
             return query.FirstOrDefault();
         }
 
+        public Book[] GetBooksByMaxRented()
+        {
+            IQueryable<Book> query = _context.Books;
+
+            query = query.Include(b => b.Publisher);
+
+            query = query.AsNoTracking().OrderByDescending(b => b.MaxRented);
+
+            return query.ToArray();
+        }
 
         public Book GetBookById(int bookId)
         {
@@ -172,9 +182,9 @@ namespace LibraryWebAPI.Data
 
             query = query.Include(b => b.Publisher);
 
-            query = query.AsNoTracking()
-                .OrderBy(b => b.Id)
-                .Where(publisher => publisher.Id == bookId);
+            query = query 
+             .OrderBy(b => b.Id)
+              .Where(publisher => publisher.Id == bookId);
 
             return query.FirstOrDefault();
         }
@@ -222,7 +232,7 @@ namespace LibraryWebAPI.Data
         {
             IQueryable<Publisher> query = _context.Publishers;
 
-            query = query.AsNoTracking()
+            query = query
                 .OrderBy(p => p.Id)
                 .Where(publisher => publisher.Id == publisherId);
 
@@ -302,7 +312,7 @@ namespace LibraryWebAPI.Data
             query = query.Include(r => r.User);
             query = query.Include(r => r.Book).ThenInclude(r => r.Publisher);
 
-            query = query.AsNoTracking()
+            query = query
                  .OrderBy(a => a.Id)
                  .Where(user => user.Id == rentId)
                  .Where(book => book.Id == rentId);

@@ -23,6 +23,7 @@ namespace LibraryWebAPI.Data
         Task<PageList<Book>> GetAllBooksAsync(PageParams pageParams);
         Book[] GetAllBooks();
         Book GetAllBooksByPublisherId(int publisherId);
+        Book[] GetBooksByMaxRented();
         Book GetBookById(int BookId);
 
         //Editoras

@@ -20,7 +20,7 @@ namespace LibraryWebAPI.Controllers
     /// </summary>
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -79,7 +79,7 @@ namespace LibraryWebAPI.Controllers
 
             if (result != null)
             {
-                return Created($"/api/v1user/{result.Id}", _mapper.Map<UserResponseDto>(result));
+                return Created($"/api/v1/user/{result.Id}", _mapper.Map<UserResponseDto>(result));
             }
             return BadRequest("Usuário não cadastrado!");
         }

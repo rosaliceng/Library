@@ -1,10 +1,19 @@
-﻿using System;
+﻿using LibraryWebAPI.Dto.Books;
+using LibraryWebAPI.Dto.Users;
+using System;
 
 namespace LibraryWebAPI.Dto.Rents
 {
     public class RentDevolutionDto
     {
-        public DateTime ReturnDate { get; set; }
-        public bool ReturnedBook { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+       
+        public int BookId { get; set; }
+    
+        public DateTime RentDate { get; set; }
+        public DateTime ForecastDate { get; set; }
+        public DateTime DevolutionDate { get; set; }
+
     }
 }

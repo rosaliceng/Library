@@ -32,6 +32,7 @@ namespace LibraryWebAPI.Services.Rents
             {
                 updateBook.Quantity--;
                 updateBook.TotalRented++;
+                updateBook.MaxRented++;
             }
 
             DateTime currentDate = DateTime.Now;
@@ -44,6 +45,8 @@ namespace LibraryWebAPI.Services.Rents
             {
                 return null;
             }
+
+
 
             _repo.Update<Book>(updateBook);
             if (_repo.SaveChanges())
@@ -59,58 +62,24 @@ namespace LibraryWebAPI.Services.Rents
             return null;
         }
 
-        public Rent RentUpdate(int rentId, Rent model)
+        public Rent RentUpdate( Rent model)
         {
-            var rent = _repo.GetRentById(rentId);
-            if (rent == null)
-            {
-                return null;
-            }
-
-            model.Id = rent.Id;
-            model.UserId = rent.UserId;
-            model.BookId = rent.BookId;
-            model.RentDate = rent.RentDate;
-            model.ForecastDate = rent.ForecastDate;
-
-            if (model.Id != rentId)
-            {
-                return null;
-            }
-
-            var updateBook = _repo.GetBookById(model.BookId);
-            if (updateBook.TotalRented < 1)
+            if (model.DevolutionDate < model.RentDate.Date)
             {
                 return null;
             }
             else
             {
-                updateBook.TotalRented--;
-                updateBook.Quantity++;
-            }
-
-            if (model.DevolutionDate.Date < model.RentDate.Date)
-            {
-                return null;
-            }
-
-            if (model.ReturnedBook != true)
-            {
-                return null;
-            }
-
-
-            _repo.Update<Book>(updateBook);
-            if (_repo.SaveChanges())
-            {
+                var book = _repo.GetBookById(model.BookId);
+                book.Quantity += 1;
+                book.TotalRented -= 1;
                 _repo.Update<Rent>(model);
-                if (_repo.SaveChanges())
-                {
-                    return model;
-                }
-                return null;
+                _repo.Update<Book>(book);
+                _repo.SaveChanges();
+                return model;
+               
             }
-            return null;
+
         }
 
         public Rent RentDelete(int rentId)
@@ -121,10 +90,7 @@ namespace LibraryWebAPI.Services.Rents
                 return null;
             }
 
-            if (rent.ReturnedBook != true)
-            {
-                return null;
-            }
+
 
             _repo.Delete(rent);
             if (_repo.SaveChanges())

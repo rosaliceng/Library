@@ -31,7 +31,7 @@ namespace LibraryWebAPI.Models.Validator
             RuleFor(b => b.Quantity)
                 .NotNull()
                 .WithMessage("Este campo é obrigatòrio!")
-                .GreaterThan(0)
+                .GreaterThan(-1)
                 .WithMessage("Mínimo de 1 caracter");
 
             RuleFor(b => b.Launch)

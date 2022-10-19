@@ -19,7 +19,7 @@ namespace LibraryWebAPI.Controllers
     /// </summary>
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class BookController : ControllerBase
     {
         public readonly IBookService _bookService;
@@ -72,6 +72,15 @@ namespace LibraryWebAPI.Controllers
             return Ok(bookDto);
         }
 
+        [HttpGet("ByMaxRented")]
+        public IActionResult GetByMaxRented()
+        {
+            var book = _repo.GetBooksByMaxRented();
+            if (book == null) return BadRequest("Livro não encontrado!");
+
+            return Ok(book);
+        }
+
         [HttpPost]
         public IActionResult Post(BookRequestDto model)
         {
@@ -79,7 +88,7 @@ namespace LibraryWebAPI.Controllers
 
             if (result != null)
             {
-                return Created($"/api/v1book/{result.Id}", _mapper.Map<BookResponseDto>(result));
+                return Created($"/api/v1/book/{result.Id}", _mapper.Map<BookResponseDto>(result));
             }
             return BadRequest("Livro não atualizado!");
         }
@@ -100,11 +109,10 @@ namespace LibraryWebAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var book = _repo.GetBookById(id);
-            if (book == null) return BadRequest("Livro não encontrado!");
+            var result = _bookService.BookDelete(id);
+          
+            if (result != null)
 
-            _repo.Delete(book);
-            if (_repo.SaveChanges())
             {
                 return Ok("Livro deletado!");
             }

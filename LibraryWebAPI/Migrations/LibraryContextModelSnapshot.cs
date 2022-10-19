@@ -29,6 +29,9 @@ namespace LibraryWebAPI.Migrations
                     b.Property<DateTime>("Launch")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("MaxRented")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -53,40 +56,55 @@ namespace LibraryWebAPI.Migrations
                             Id = 1,
                             Author = "Jk Rowling",
                             Launch = new DateTime(2000, 11, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MaxRented = 2,
                             Name = "Harry Potter e o Cálice de fogo",
                             PublisherId = 1,
                             Quantity = 10,
-                            TotalRented = 23
+                            TotalRented = 1
                         },
                         new
                         {
                             Id = 2,
                             Author = "Drauzio Varella",
                             Launch = new DateTime(1999, 6, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MaxRented = 4,
                             Name = "Estação Carandiru",
                             PublisherId = 3,
                             Quantity = 68,
-                            TotalRented = 90
+                            TotalRented = 2
                         },
                         new
                         {
                             Id = 3,
                             Author = "Antoine de Saint-Exupéry",
                             Launch = new DateTime(1943, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MaxRented = 3,
                             Name = "O pequeno príncipe",
                             PublisherId = 4,
                             Quantity = 10,
-                            TotalRented = 36
+                            TotalRented = 1
                         },
                         new
                         {
                             Id = 4,
-                            Author = "Rick Riordan",
-                            Launch = new DateTime(2005, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Percy Jackson e o Ladrão de raios",
-                            PublisherId = 2,
-                            Quantity = 3,
-                            TotalRented = 23
+                            Author = " Robert Cecil Martin",
+                            Launch = new DateTime(2008, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MaxRented = 3,
+                            Name = "Code Clean",
+                            PublisherId = 4,
+                            Quantity = 10,
+                            TotalRented = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Author = "Margareth Mitchell",
+                            Launch = new DateTime(1999, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MaxRented = 3,
+                            Name = "E o vento levou",
+                            PublisherId = 4,
+                            Quantity = 10,
+                            TotalRented = 1
                         });
                 });
 
@@ -142,7 +160,7 @@ namespace LibraryWebAPI.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DevolutionDate")
+                    b.Property<DateTime?>("DevolutionDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("ForecastDate")
@@ -150,9 +168,6 @@ namespace LibraryWebAPI.Migrations
 
                     b.Property<DateTime>("RentDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<bool?>("ReturnedBook")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -171,40 +186,36 @@ namespace LibraryWebAPI.Migrations
                             Id = 1,
                             BookId = 1,
                             DevolutionDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ForecastDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ForecastDate = new DateTime(2022, 8, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RentDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReturnedBook = false,
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
                             BookId = 3,
-                            DevolutionDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ForecastDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DevolutionDate = new DateTime(2022, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ForecastDate = new DateTime(2022, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RentDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReturnedBook = false,
                             UserId = 2
                         },
                         new
                         {
                             Id = 3,
-                            BookId = 4,
-                            DevolutionDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ForecastDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RentDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReturnedBook = false,
-                            UserId = 4
+                            BookId = 2,
+                            DevolutionDate = new DateTime(2022, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ForecastDate = new DateTime(2022, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentDate = new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 3
                         },
                         new
                         {
                             Id = 4,
-                            BookId = 2,
-                            DevolutionDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ForecastDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RentDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ReturnedBook = false,
-                            UserId = 3
+                            BookId = 4,
+                            DevolutionDate = new DateTime(2022, 10, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ForecastDate = new DateTime(2022, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RentDate = new DateTime(2022, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = 6
                         });
                 });
 
@@ -237,15 +248,15 @@ namespace LibraryWebAPI.Migrations
                             Address = "Rua A",
                             City = "Fortaleza",
                             Email = "rosa@gmail.com",
-                            Name = "Rosa"
+                            Name = "Rosalice Nogueira"
                         },
                         new
                         {
                             Id = 2,
                             Address = "Rua B",
                             City = "Caucaia",
-                            Email = "alice@gmail.com",
-                            Name = "Alice"
+                            Email = "ana@gmail.com",
+                            Name = "Ana Pontes"
                         },
                         new
                         {
@@ -253,15 +264,31 @@ namespace LibraryWebAPI.Migrations
                             Address = "Rua C",
                             City = "Fortaleza",
                             Email = "andre@gmail.com",
-                            Name = "André"
+                            Name = "André Vieira"
                         },
                         new
                         {
                             Id = 4,
+                            Address = "Rua Gorvenador Sampaio",
+                            City = "São Paulo",
+                            Email = "marcos@gmail.com",
+                            Name = "Marcos Aurélio"
+                        },
+                        new
+                        {
+                            Id = 5,
                             Address = "Rua D",
-                            City = "Fortaleza",
-                            Email = "naua@gmail.com",
-                            Name = "Nauã"
+                            City = "Rio de Janeiro",
+                            Email = "antonia@gmail.com",
+                            Name = "Antonia Villela"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Address = "Rua Avelino Marçal",
+                            City = "Aquiraz",
+                            Email = "juarez@gmail.com",
+                            Name = "Juarez Fernandez"
                         });
                 });
 
