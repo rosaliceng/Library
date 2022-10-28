@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryWebAPI.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20221017192234_init")]
+    [Migration("20221020170416_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,6 +171,9 @@ namespace LibraryWebAPI.Migrations
                     b.Property<DateTime>("RentDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("StatusRents")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -190,15 +193,17 @@ namespace LibraryWebAPI.Migrations
                             DevolutionDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ForecastDate = new DateTime(2022, 8, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RentDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusRents = "No prazo",
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
                             BookId = 3,
-                            DevolutionDate = new DateTime(2022, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DevolutionDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ForecastDate = new DateTime(2022, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RentDate = new DateTime(2022, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusRents = "Pendente",
                             UserId = 2
                         },
                         new
@@ -208,6 +213,7 @@ namespace LibraryWebAPI.Migrations
                             DevolutionDate = new DateTime(2022, 9, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ForecastDate = new DateTime(2022, 8, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RentDate = new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusRents = "Com atraso",
                             UserId = 3
                         },
                         new
@@ -217,6 +223,7 @@ namespace LibraryWebAPI.Migrations
                             DevolutionDate = new DateTime(2022, 10, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ForecastDate = new DateTime(2022, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             RentDate = new DateTime(2022, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StatusRents = "Com atraso",
                             UserId = 6
                         });
                 });

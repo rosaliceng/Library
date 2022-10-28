@@ -8,11 +8,11 @@ namespace LibraryWebAPI.Services.Rents
     public class RentService : IRentService
     {
         private readonly IRepository _repo;
-        private readonly IMapper _mapper;
-        public RentService(IRepository repo, IMapper mapper)
+       
+        public RentService(IRepository repo)
         {
             _repo = repo;
-            _mapper = mapper;
+
         }
 
         public Rent RentCreate(Rent model)
@@ -46,7 +46,14 @@ namespace LibraryWebAPI.Services.Rents
                 return null;
             }
 
-
+            if (string.IsNullOrEmpty(model.StatusRents))
+            {
+                model.StatusRents = "Pendente";
+            }
+            else
+            {
+                return null;
+            }
 
             _repo.Update<Book>(updateBook);
             if (_repo.SaveChanges())
@@ -64,6 +71,19 @@ namespace LibraryWebAPI.Services.Rents
 
         public Rent RentUpdate( Rent model)
         {
+            
+            if (model.DevolutionDate> model.ForecastDate.Date)
+            {
+                model.StatusRents = "Com atraso";
+            }
+            else if (model.DevolutionDate<= model.ForecastDate.Date)
+            {
+                model.StatusRents = "No prazo";
+            }
+            else
+            {
+                return null;
+            }
             if (model.DevolutionDate < model.RentDate.Date)
             {
                 return null;
@@ -77,9 +97,8 @@ namespace LibraryWebAPI.Services.Rents
                 _repo.Update<Book>(book);
                 _repo.SaveChanges();
                 return model;
-               
-            }
 
+            }
         }
 
         public Rent RentDelete(int rentId)

@@ -48,10 +48,10 @@ namespace LibraryWebAPI.Data
             builder.Entity<Rent>()
                 .HasData(new List<Rent>()
                 {
-                    new Rent(1, 1, 1, DateTime.Parse("22/08/2022"), DateTime.Parse("23/08/2022"),  DateTime.Parse("22/08/2022")),
-                    new Rent(2, 2, 3, DateTime.Parse("22/08/2022"), DateTime.Parse("25/08/2022"),  DateTime.Parse("25/08/2022")),
-                    new Rent(3, 3, 2, DateTime.Parse("01/09/2022"), DateTime.Parse("04/08/2022"),  DateTime.Parse("10/09/2022")),
-                    new Rent(4, 6, 4, DateTime.Parse("05/09/2022"), DateTime.Parse("15/10/2022"),  DateTime.Parse("25/10/2022")),
+                    new Rent(1, 1, 1, DateTime.Parse("22/08/2022"), DateTime.Parse("23/08/2022"),  DateTime.Parse("22/08/2022"),"No prazo"),
+                    new Rent(2, 2, 3, DateTime.Parse("22/08/2022"), DateTime.Parse("25/08/2022"),  DateTime.Parse("01/01/0001"),"Pendente"),
+                    new Rent(3, 3, 2, DateTime.Parse("01/09/2022"), DateTime.Parse("04/08/2022"),  DateTime.Parse("10/09/2022"),"Com atraso"),
+                    new Rent(4, 6, 4, DateTime.Parse("05/09/2022"), DateTime.Parse("15/10/2022"),  DateTime.Parse("25/10/2022"),"Com atraso"),
                     
                 });
         }

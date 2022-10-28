@@ -15,6 +15,7 @@ namespace LibraryWebAPI.Dto.Rents
             public DateTime RentDate { get; set; }
             public DateTime ForecastDate { get; set; }
             public DateTime? DevolutionDate { get; set; }
+            public string StatusRents { get; set; }
 
         }
 

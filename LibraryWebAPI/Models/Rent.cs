@@ -15,6 +15,7 @@ namespace LibraryWebAPI.Models
             ForecastDate = forecastDate;
             DevolutionDate = devolutionDate;
             StatusRents = statusRents;
+          
         }
 
         public int Id { get; set; }
@@ -25,10 +26,6 @@ namespace LibraryWebAPI.Models
         public DateTime RentDate { get; set; }
         public DateTime ForecastDate { get; set; }
         public DateTime? DevolutionDate { get; set; }
-
-        public string? StatusRents { get; set; }
-
-
-
+        public string StatusRents { get; set; }
     }
 }
